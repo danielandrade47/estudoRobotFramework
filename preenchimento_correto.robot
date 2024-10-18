@@ -1,5 +1,8 @@
 *** Settings ***
-Library    SeleniumLibrary
+Library          SeleniumLibrary
+Resource         setup_teardown.robot
+Test Setup       Dado que eu acesse o Organo
+Test Teardown    Fechar o navegador
 
 *** Variables ***
 ${CAMPO_NOME}             id:form-nome
@@ -17,16 +20,12 @@ ${OPCAO_INOVACAO}         //option[contains(.,'Inovação e Gestão')]
 
 *** Test Cases ***
 Verificar se ao preencher os campos do formulário corretamente os dados são inseridos na lista e se um novo card é criado no time esperado
-    Dado que eu acesse o Organo
-    E preencha os campos do formulário
+    Dado que eu preencha os campos do formulário
     E clique no botão Criar Card
     Então identificar o card no time esperado
 
-*** Keywords ***
-Dado que eu acesse o Organo
-    Open Browser    url=http://localhost:3000  browser=Chrome
-
-E preencha os campos do formulário
+*** Keywords ***   
+Dado que eu preencha os campos do formulário
     Input Text       ${CAMPO_NOME}      Daniel
     Input Text       ${CAMPO_CARGO}     Analista de QA
     Input Text       ${CAMPO_IMAGEM}    https://picsum.photos/200/300
@@ -34,7 +33,7 @@ E preencha os campos do formulário
     Click Element    ${OPCAO_PROGRAMACAO}
 
 E clique no botão Criar Card
-    Click Element    id:form-botao
+    Click Element    ${BOTAO_CARD}
 
 Então identificar o card no time esperado
     Element Should Be Visible    class:colaboradores
